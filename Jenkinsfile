@@ -20,12 +20,12 @@ pipeline {
 				git branch: 'main', credentialsId: 'jenkins-sonarqube', url: 'https://github.com/hossain109/Complete-CI-CD.git'
 			}
 		}
-		// stage('Unit Test'){
-		// 	steps {
-		// 		sh 'npm test'
-		// 		sh 'npm install'		
-		// 	}
-		// }
+		stage('Unit Test'){
+			steps {
+				sh 'npm test'
+				sh 'npm install'		
+			}
+		}
 		// stage('SonarQube Analysis'){
 		// 	steps {
 		// 		withCredentials([string(credentialsId: 'complete-cicd-02-token', variable: 'SONAR_TOKEN')]) {
