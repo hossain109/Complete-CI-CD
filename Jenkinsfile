@@ -3,9 +3,9 @@ pipeline {
 	tools {
 		nodejs 'NodeJS'
 	}
-	// environment {
-	// 	SONAR_PROJECT_KEY = 'complete-cicd-02'
-	// 	SONAR_SCANNER_HOME = tool 'SonarQubeScanner'
+	environment {
+		SONAR_PROJECT_KEY = 'complete-CICD'
+		SONAR_SCANNER_HOME = tool 'SonarQubeScanner'
 	// 	JOB_NAME_NOW = 'cicd02'
 	// 	ECR_REPO = 'iquantawsrepo'
 	// 	IMAGE_TAG = 'latest'
@@ -13,7 +13,7 @@ pipeline {
 	// 	ECS_CLUSTER = 'iquant-ecs'
 	// 	ECS_SERVICE = 'iquant-ecs-svc'
 	// 	ALB_TARGET_GROUP_ARN = 'ecs-iquant-svc-tg'
-	// }
+	}
 	stages {
 		stage('GitHub'){
 			steps {
@@ -26,32 +26,30 @@ pipeline {
 				sh 'npm install'		
 			}
 		}
-		// stage('SonarQube Analysis'){
-		// 	steps {
-		// 		withCredentials([string(credentialsId: 'complete-cicd-02-token', variable: 'SONAR_TOKEN')]) {
-    					
-		// 			withSonarQubeEnv('SonarQube') {
-    		// 				sh """
-		// 				${SONAR_SCANNER_HOME}/bin/sonar-scanner \
-		// 				-Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-		// 				-Dsonar.sources=. \
-		// 				-Dsonar.host.url=http://sonarqube-dind:9000 \
-		// 				-Dsonar.login=${SONAR_TOKEN}
-		// 				"""
-		// 			}
-		// 		}
-		// 	}
-		// }
+		stage('SonarQube Analysis'){
+			steps {
+				withCredentials([string(credentialsId: 'sonar-credential', variable: 'SONAR_TOKEN')]) {
+					withSonarQubeEnv('SonarQube') {
+					// some block
+					}
+
+				}	
+					withSonarQubeEnv('SonarQube') {
+    						sh """
+						${SONAR_SCANNER_HOME}/bin/sonar-scanner \
+						-Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+						-Dsonar.sources=. \
+						-Dsonar.host.url=http://sonarqube-dind:9000 \
+						-Dsonar.login=${sonar-token}
+						"""
+					}
+			}
+		}
 		// stage('Docker Image'){
 		// 	steps {
 		// 		script {
 		// 			docker.build("${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}")
 		// 		}
-		// 	}
-		// }
-		// stage('Trivy Scan'){
-		// 	steps {
-		// 		sh 'trivy --severity HIGH,CRITICAL --no-progress --format table -o trivy-report.html image ${JOB_NAME_NOW}:latest'
 		// 	}
 		// }
 		// stage('Login to ECR'){
