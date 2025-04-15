@@ -1,7 +1,7 @@
 pipeline {
 	agent any
 	tools {
-		NodeJs 'NodeJS'
+		NodeJS 'NodeJS'
 	}
 	environment {
 		SONAR_PROJECT_KEY = 'complete-CICD'
